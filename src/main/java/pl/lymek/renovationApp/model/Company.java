@@ -1,22 +1,48 @@
 package pl.lymek.renovationApp.model;
 
-import org.apache.tomcat.jni.Address;
-
+import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
+@Entity
+@Table(name = "companies")
 public class Company {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
+    @NotNull(message = "PODAJ NAZWĘ FIRMY")
     private String name;
-    private Address address;
+
+    @ManyToOne
+    private pl.lymek.renovationApp.model.Address address;
+
     private String email;
     private String phoneNumber;
+
+    @OneToMany
     private List<Employee> employees;
+
+    @OneToOne
     private User owner;
+
+    @OneToMany(mappedBy = "company")
     private List <Commission> commissions;
+
+    @ManyToOne
+    private Address addresses;
+
+//------------------------------------------------------------------------------------------------
 
     public Company() {
     }
+
+    public Company(@NotNull(message = "PODAJ NAZWĘ FIRMY") String name) {
+        this.name = name;
+    }
+
+    //--------------------------------------------------------------------------------------------------
 
     public long getId() {
         return id;
@@ -30,17 +56,6 @@ public class Company {
         return name;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
     public String getEmail() {
         return email;
@@ -80,5 +95,17 @@ public class Company {
 
     public void setCommissions(List<Commission> commissions) {
         this.commissions = commissions;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 }

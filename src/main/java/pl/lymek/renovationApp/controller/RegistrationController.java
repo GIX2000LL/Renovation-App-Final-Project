@@ -1,18 +1,35 @@
 package pl.lymek.renovationApp.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+import pl.lymek.renovationApp.model.Company;
 import pl.lymek.renovationApp.model.User;
+import pl.lymek.renovationApp.repository.CompanyRepository;
+import pl.lymek.renovationApp.repository.UserRepository;
+import pl.lymek.renovationApp.security.BCrypt;
+import pl.lymek.renovationApp.security.SecurityConfig;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RequestMapping("/registration")
 @Controller
-public class RegistrationController {
+public class RegistrationController{
+
+    private final UserRepository userRepository;
+    private final CompanyRepository companyRepository;
+
+    @Autowired
+    public RegistrationController(UserRepository userRepository, CompanyRepository companyRepository) {
+        this.userRepository = userRepository;
+        this.companyRepository=companyRepository;
+    }
 
     @RequestMapping
     public String showRegistrationForm (Model model) {
@@ -22,11 +39,22 @@ public class RegistrationController {
     }
 
     @PostMapping
-    @ResponseBody
-    public String showFormResult (@ModelAttribute User user, HttpServletRequest request) {
+    public String showFormResult (@ModelAttribute @Valid User user, BindingResult result, HttpServletRequest request) {
 
-        String companyName = request.getParameter("companyName");
+        if(result.hasErrors()){
 
-        return user.getFirstName()+" "+companyName;
+            return "registrationForm";
+        } else {
+
+            user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt()));
+            user.setSecurityRole("owner");
+            Company newCompany = new Company(request.getParameter("companyName"));
+            companyRepository.save(newCompany);
+            user.setCompany(newCompany);
+            newCompany.setOwner(user);
+            userRepository.save(user);
+
+            return "redirect:/login";
+        }
     }
 }

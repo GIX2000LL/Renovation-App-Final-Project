@@ -1,19 +1,33 @@
 package pl.lymek.renovationApp.model;
 
+import javax.persistence.*;
 import java.util.List;
 
+@Entity
+@Table(name = "employees")
 public class Employee {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
 
     private long id;
     private String firstName;
     private String lastName;
+
+    @ManyToOne
     private Address address;
+
     private double hourlyRate;
-    private List<String> skills;
+
+    @ManyToMany(mappedBy = "employees")
     private List<Commission> commissions;
+
+//---------------------------------------------------------------------------------------------------
 
     public Employee() {
     }
+
+//----------------------------------------------------------------------------------------------------
 
     public long getId() {
         return id;
@@ -55,14 +69,6 @@ public class Employee {
         this.hourlyRate = hourlyRate;
     }
 
-    public List<String> getSkills() {
-        return skills;
-    }
-
-    public void setSkills(List<String> skills) {
-        this.skills = skills;
-    }
-
     public List<Commission> getCommissions() {
         return commissions;
     }
@@ -70,4 +76,6 @@ public class Employee {
     public void setCommissions(List<Commission> commissions) {
         this.commissions = commissions;
     }
+
+
 }

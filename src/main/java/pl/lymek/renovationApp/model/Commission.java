@@ -1,20 +1,41 @@
 package pl.lymek.renovationApp.model;
 
+import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
 
+@Entity
+@Table(name = "commissions")
 public class Commission {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+
     private String principal;
     private LocalDate commissionStart;
     private LocalDate commissionEnd;
+
+    @OneToOne
     private Estimate estimate;
+
+    @OneToOne
     private Schedule schedule;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name = "commissions_employees",joinColumns = @JoinColumn(name = "commission_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
     private List<Employee> employees;
+
+    @ManyToOne
+    private Company company;
+
+//----------------------------------------------------------------------------------------------------------
 
     public Commission() {
     }
+
+//-----------------------------------------------------------------------------------------------------------
 
     public long getId() {
         return id;
@@ -71,4 +92,6 @@ public class Commission {
     public void setEmployees(List<Employee> employees) {
         this.employees = employees;
     }
+
+
 }

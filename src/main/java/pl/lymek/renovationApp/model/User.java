@@ -1,30 +1,52 @@
 package pl.lymek.renovationApp.model;
 
+
+import pl.lymek.renovationApp.security.BCrypt;
+
+import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
+@Entity
+@Table(name = "users")
 public class User {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
-    private String firstName;
-    private String lastName;
-    private String password;
-    private String phoneNumber;
-    private String email;
-    private Address address;
 
+    @Size (min = 2, message = "IMIĘ MUSI SIĘ SKŁADAC Z MINIMUM 2 ZNAKÓW")
+    private String firstName;
+
+    @Size (min = 2, message = "NAZWISKO MUSI SIĘ SKŁADAĆ Z MINIMUM 2 ZNAKÓW")
+    private String lastName;
+
+    private String password;
+
+    @Pattern(regexp = "\\d{9}",message = "TELEFON MUSI SKŁADAĆ Z CYFR I MAKSYMALNIE 9 ZNAKÓW")
+    private String phoneNumber;
+
+    private String email;
+
+    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @JoinTable(name ="users_addresses",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "address_id"))
+    private List <Address> addresses = new ArrayList<>();
+
+    @OneToOne
     private Company company;
 
     private String securityRole;
 
 
-// ---------------------------Konstruktory --------------------------------------------------------------------------
+// -----------------------------------------------------------------------------------------------------
 
     public User() {
+
     }
 
-
-    //----------------------------------Settery i Gettery------------------------------------------------------
-
+//------------------------------------------------------------------------------------------------------
 
     public long getId() {
         return id;
@@ -74,13 +96,6 @@ public class User {
         this.email = email;
     }
 
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
-    }
 
     public Company getCompany() {
         return company;
@@ -97,4 +112,15 @@ public class User {
     public void setSecurityRole(String securityRole) {
         this.securityRole = securityRole;
     }
+
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
+
+
+
 }
