@@ -47,7 +47,7 @@ public class RegistrationController{
         } else {
 
             user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt()));
-            user.setSecurityRole("owner");
+            user.setSecurityRole("OWNER");
             Company newCompany = new Company(request.getParameter("companyName"));
             companyRepository.save(newCompany);
             user.setCompany(newCompany);

@@ -1,15 +1,15 @@
 package pl.lymek.renovationApp.controller;
 
-
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+@RequestMapping("/user")
 @Controller
-public class LogoutController {
+public class UserController {
 
-    @RequestMapping("/logout-success")
-    public String showLogoutPage() {
+    @RequestMapping
+    public String showUserZone () {
 
-        return "logout";
+        return "user";
     }
 }

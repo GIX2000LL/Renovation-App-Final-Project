@@ -5,6 +5,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import pl.lymek.renovationApp.model.User;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 
@@ -19,8 +21,7 @@ public class CommonUser implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
-        return Collections.singleton(new SimpleGrantedAuthority("owner"));
-
+        return Collections.singleton(new SimpleGrantedAuthority("OWNER"));
     }
 
     @Override
