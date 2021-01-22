@@ -1,8 +1,5 @@
 package pl.lymek.renovationApp.model;
 
-
-import pl.lymek.renovationApp.security.BCrypt;
-
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
@@ -25,12 +22,14 @@ public class User {
 
     private String password;
 
+    private boolean isActive;
+
     @Pattern(regexp = "\\d{9}",message = "TELEFON MUSI SKŁADAĆ Z CYFR I MAKSYMALNIE 9 ZNAKÓW")
     private String phoneNumber;
 
     private String email;
 
-    @ManyToMany(cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @ManyToMany(cascade = {CascadeType.ALL})
     @JoinTable(name ="users_addresses",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "address_id"))
     private List <Address> addresses = new ArrayList<>();
 
@@ -47,6 +46,7 @@ public class User {
     }
 
 //------------------------------------------------------------------------------------------------------
+
 
     public long getId() {
         return id;
@@ -80,6 +80,14 @@ public class User {
         this.password = password;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
+
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -96,6 +104,13 @@ public class User {
         this.email = email;
     }
 
+    public List<Address> getAddresses() {
+        return addresses;
+    }
+
+    public void setAddresses(List<Address> addresses) {
+        this.addresses = addresses;
+    }
 
     public Company getCompany() {
         return company;
@@ -113,14 +128,19 @@ public class User {
         this.securityRole = securityRole;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", password='" + password + '\'' +
+                ", isActive=" + isActive +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", email='" + email + '\'' +
+                ", addresses=" + addresses +
+                ", company=" + company +
+                ", securityRole='" + securityRole + '\'' +
+                '}';
     }
-
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
-    }
-
-
-
 }

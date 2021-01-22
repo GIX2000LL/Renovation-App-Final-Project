@@ -18,7 +18,7 @@ import javax.validation.Validator;
 @EnableWebMvc
 @ComponentScan(basePackages = "pl.lymek")
 @EnableTransactionManagement
-@EnableJpaRepositories(basePackages = "pl.lymek")
+//@EnableJpaRepositories(basePackages = "pl.lymek")
 public class AppConfig {
 
     @Bean

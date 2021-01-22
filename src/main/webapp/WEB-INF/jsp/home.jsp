@@ -20,7 +20,8 @@
                     <a href="/login"><label style="color: brown">ZALOGUJ SIĘ</label> </a>
                 </td> </tr>
                 <tr><td style="text-align: center"><h3 style="color: blue">ZARZĄDZAJ MĄDRZE SWOIM BIZNESEM</h3></td></tr>
-           <a href="/logout">LOGOUT</a>
+           <a href="/logout">WYLOGUJ</a><br/>
+           <a href="/user">UŻYTKOWNIK</a>
        </table>
    </div>
 

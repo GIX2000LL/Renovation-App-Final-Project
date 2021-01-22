@@ -16,7 +16,7 @@ public class Company {
     private String name;
 
     @ManyToOne
-    private pl.lymek.renovationApp.model.Address address;
+    private Address address;
 
     private String email;
     private String phoneNumber;
@@ -30,9 +30,6 @@ public class Company {
     @OneToMany(mappedBy = "company")
     private List <Commission> commissions;
 
-    @ManyToOne
-    private Address addresses;
-
 //------------------------------------------------------------------------------------------------
 
     public Company() {
@@ -43,6 +40,7 @@ public class Company {
     }
 
     //--------------------------------------------------------------------------------------------------
+
 
     public long getId() {
         return id;
@@ -56,6 +54,17 @@ public class Company {
         return name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
     public String getEmail() {
         return email;
@@ -97,15 +106,17 @@ public class Company {
         this.commissions = commissions;
     }
 
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Address getAddress() {
-        return address;
-    }
-
-    public void setAddress(Address address) {
-        this.address = address;
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address=" + address +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", employees=" + employees +
+                ", owner=" + owner +
+                ", commissions=" + commissions +
+                '}';
     }
 }

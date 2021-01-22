@@ -4,8 +4,8 @@
     <title>UZYTKOWNIK</title>
 </head>
 <body style="background-color: lightgray">
-
- STRONA UŻYTKOWNIKA
-
+    <header style="width: 90%">
+        <div style="color: green; text-align: right">WITAJ  ${currentUserName}</div></h2>
+    </header>
 </body>
 </html>

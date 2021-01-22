@@ -7,13 +7,11 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import pl.lymek.renovationApp.model.Company;
 import pl.lymek.renovationApp.model.User;
 import pl.lymek.renovationApp.repository.CompanyRepository;
 import pl.lymek.renovationApp.repository.UserRepository;
 import pl.lymek.renovationApp.security.BCrypt;
-import pl.lymek.renovationApp.security.SecurityConfig;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -48,6 +46,8 @@ public class RegistrationController{
 
             user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt()));
             user.setSecurityRole("OWNER");
+            user.setActive(true);
+
             Company newCompany = new Company(request.getParameter("companyName"));
             companyRepository.save(newCompany);
             user.setCompany(newCompany);
