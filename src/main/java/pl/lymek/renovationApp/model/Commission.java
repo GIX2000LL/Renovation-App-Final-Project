@@ -12,6 +12,7 @@ public class Commission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    private String name;
     private String principal;
     private LocalDate commissionStart;
     private LocalDate commissionEnd;
@@ -93,5 +94,34 @@ public class Commission {
         this.employees = employees;
     }
 
+    public String getName() {
+        return name;
+    }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Company getCompany() {
+        return company;
+    }
+
+    public void setCompany(Company company) {
+        this.company = company;
+    }
+
+    @Override
+    public String toString() {
+        return "Commission{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", principal='" + principal + '\'' +
+                ", commissionStart=" + commissionStart +
+                ", commissionEnd=" + commissionEnd +
+                ", estimate=" + estimate +
+                ", schedule=" + schedule +
+                ", employees=" + employees +
+                ", company=" + company +
+                '}';
+    }
 }

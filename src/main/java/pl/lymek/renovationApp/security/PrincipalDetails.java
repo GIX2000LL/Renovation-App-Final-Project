@@ -16,9 +16,12 @@ public class PrincipalDetails implements UserDetails {
     private boolean isActive;
     private String securityRole;
     private List<GrantedAuthority> authorities;
+    private User user;
 
 
     public PrincipalDetails(User user) {
+
+        this.user=user;
         this.email = user.getEmail();
         this.password = user.getPassword();
         this.isActive = user.isActive();
@@ -69,4 +72,12 @@ public class PrincipalDetails implements UserDetails {
         return isActive;
     }
 
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }

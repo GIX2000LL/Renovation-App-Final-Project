@@ -2,6 +2,8 @@ package pl.lymek.renovationApp.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -12,6 +14,7 @@ public class Company {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Size(min=2,message = "NAZWA MUSI MIEĆ CONAJMNIEJ 2 ZNAKI")
     @NotNull(message = "PODAJ NAZWĘ FIRMY")
     private String name;
 
@@ -19,6 +22,8 @@ public class Company {
     private Address address;
 
     private String email;
+
+    @Pattern(regexp = "\\d{9}")
     private String phoneNumber;
 
     @OneToMany

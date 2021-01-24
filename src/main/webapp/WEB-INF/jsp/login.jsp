@@ -16,14 +16,14 @@
             <table>
                 <tr><td>EMAIL: </td><td><input type="text" name="username"></td></tr><br/>
                 <tr><td>HASŁO: </td><td><input type="password" name="password"></td></tr><br/><br/>
-                <tr><td></td><td><input name="submit" type="submit" value="ZALOGUJ SIĘ"></td></tr>
+                <tr><td></td><td><input style="color: green" name="submit" type="submit" value="ZALOGUJ SIĘ"></td></tr>
             </table>
 
         </form>
 
     </div>
 
-    <a href="/"><button type="submit ">WRÓĆ DO STRONY GŁÓWNEJ</button> </a>
+    <div align="center"> <a href="/"><button style="color: green">WRÓĆ DO STRONY GŁÓWNEJ</button> </a> </div>
 
 
 </body>

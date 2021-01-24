@@ -22,6 +22,8 @@
                 <tr><td></td><td><form:errors path="lastName" cssStyle="color: red"/></td> </tr><br/>
 
                 <tr><td>HASŁO</td> <td>  <form:input path="password" type="password"/> </td></tr><br/>
+                <tr><td></td><td><form:errors path="password" cssStyle="color: red"/></td> </tr><br/>
+
                 <tr><td>EMAIL</td> <td>  <form:input path="email" type="email"/> </td></tr><br/>
 
                 <tr><td>TELEFON</td> <td>  <form:input path="phoneNumber"/> </td></tr><br/>
@@ -30,7 +32,7 @@
 
                 <tr><td>NAZWA FIRMY</td> <td>  <input type="text" name="companyName"/> </td></tr><br/>
                 <tr></tr><td></td><br/>
-                <tr><td></td><td>  <input type="submit" value="STWÓRZ PROFIL"> </td></tr><br/>
+                <tr><td></td><td>  <input style="color: blue" type="submit" value="STWÓRZ PROFIL"> </td></tr><br/>
             </table>
         </form>
 
@@ -39,9 +41,9 @@
     <div align="center" style="background-color: wheat;position:relative">
         <br/><br/>
         <table>
-        <tr><td><a href="/login"><button style="color: green" type="submit">PRZEJDŹ DO LOGOWANIA</button> </a></td>
+        <tr><td><a href="/login"><button style="color: green">PRZEJDŹ DO LOGOWANIA</button> </a></td>
             <td width="20px"></td>
-            <td><a href="/"><button style="color: green" type="submit">WRÓĆ DO STRONY GŁÓWNEJ</button> </a></td></tr>
+            <td><a href="/"><button style="color: green" >WRÓĆ DO STRONY GŁÓWNEJ</button> </a></td></tr>
         </table>
     </div>
 </body>

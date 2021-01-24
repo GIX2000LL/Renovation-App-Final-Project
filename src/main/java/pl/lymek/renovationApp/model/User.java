@@ -3,8 +3,6 @@ package pl.lymek.renovationApp.model;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -20,18 +18,18 @@ public class User {
     @Size (min = 2, message = "NAZWISKO MUSI SIĘ SKŁADAĆ Z MINIMUM 2 ZNAKÓW")
     private String lastName;
 
+    @Size(min=1, message = "HASŁO MUSI MIEĆ CONAJMNIEJ ! ZNAK")
     private String password;
 
-    private boolean isActive;
+    private boolean isActive=true;
 
     @Pattern(regexp = "\\d{9}",message = "TELEFON MUSI SKŁADAĆ Z CYFR I MAKSYMALNIE 9 ZNAKÓW")
     private String phoneNumber;
 
     private String email;
 
-    @ManyToMany(cascade = {CascadeType.ALL})
-    @JoinTable(name ="users_addresses",joinColumns = @JoinColumn(name = "user_id"),inverseJoinColumns = @JoinColumn(name = "address_id"))
-    private List <Address> addresses = new ArrayList<>();
+    @ManyToOne
+    private Address address;
 
     @OneToOne
     private Company company;
@@ -47,6 +45,14 @@ public class User {
 
 //------------------------------------------------------------------------------------------------------
 
+
+    public boolean isActive() {
+        return isActive;
+    }
+
+    public void setActive(boolean active) {
+        isActive = active;
+    }
 
     public long getId() {
         return id;
@@ -80,14 +86,6 @@ public class User {
         this.password = password;
     }
 
-    public boolean isActive() {
-        return isActive;
-    }
-
-    public void setActive(boolean active) {
-        isActive = active;
-    }
-
     public String getPhoneNumber() {
         return phoneNumber;
     }
@@ -104,12 +102,12 @@ public class User {
         this.email = email;
     }
 
-    public List<Address> getAddresses() {
-        return addresses;
+    public Address getAddress() {
+        return address;
     }
 
-    public void setAddresses(List<Address> addresses) {
-        this.addresses = addresses;
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
     public Company getCompany() {
@@ -138,7 +136,7 @@ public class User {
                 ", isActive=" + isActive +
                 ", phoneNumber='" + phoneNumber + '\'' +
                 ", email='" + email + '\'' +
-                ", addresses=" + addresses +
+                ", address=" + address +
                 ", company=" + company +
                 ", securityRole='" + securityRole + '\'' +
                 '}';

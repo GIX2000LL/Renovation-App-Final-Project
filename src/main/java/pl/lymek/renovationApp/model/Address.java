@@ -1,9 +1,15 @@
 package pl.lymek.renovationApp.model;
 
+import org.hibernate.annotations.Fetch;
+import org.springframework.validation.annotation.Validated;
+
 import javax.persistence.*;
+import javax.validation.constraints.Pattern;
+import javax.validation.constraints.Size;
 import java.util.ArrayList;
 import java.util.List;
 
+@Validated
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -12,13 +18,20 @@ public class Address {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Size(min=2, message = "NAZWA ULICY MUSI POSIADAĆ CONAJMNIEJ 2 ZNAKI")
     private String street;
-    private String town;
-    private String ZipCode;
-    private int StreetNumber;
 
-    @ManyToMany(mappedBy = "addresses")
-    List <User> users = new ArrayList<>();
+    @Size(min=2,message = "NAZWA MIASTA MUSI POSIADAĆ MINIMUM 2 ZNAKI")
+    private String town;
+
+    @Pattern(regexp = "[0-9]{2}-[0-9]{3}",message = "WPISZ POPRAWNIE KOD POCZTOWY")
+    private String zipCode;
+
+    @Pattern(regexp = "\\d\\D")
+    private String streetNumber;
+
+   @OneToMany(mappedBy = "address")
+   private List <User> users = new ArrayList<>();
 
 //-----------------------------------------------------------------------------------------------------
 
@@ -26,6 +39,7 @@ public class Address {
     }
 
 //-------------------------------------------------------------------------------------------------------
+
 
     public long getId() {
         return id;
@@ -52,21 +66,20 @@ public class Address {
     }
 
     public String getZipCode() {
-        return ZipCode;
+        return zipCode;
     }
 
     public void setZipCode(String zipCode) {
-        ZipCode = zipCode;
+        this.zipCode = zipCode;
     }
 
-    public int getStreetNumber() {
-        return StreetNumber;
+    public String getStreetNumber() {
+        return streetNumber;
     }
 
-    public void setStreetNumber(int streetNumber) {
-        StreetNumber = streetNumber;
+    public void setStreetNumber(String streetNumber) {
+        this.streetNumber = streetNumber;
     }
-
 
     public List<User> getUsers() {
         return users;
@@ -74,5 +87,17 @@ public class Address {
 
     public void setUsers(List<User> users) {
         this.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return "Address{" +
+                "id=" + id +
+                ", street='" + street + '\'' +
+                ", town='" + town + '\'' +
+                ", zipCode='" + zipCode + '\'' +
+                ", streetNumber=" + streetNumber +
+                ", users=" + users +
+                '}';
     }
 }
