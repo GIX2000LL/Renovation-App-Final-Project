@@ -1,15 +1,10 @@
 package pl.lymek.renovationApp.model;
 
-import org.hibernate.annotations.Fetch;
-import org.springframework.validation.annotation.Validated;
-
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.List;
 
-@Validated
+
 @Entity
 @Table(name = "addresses")
 public class Address {
@@ -27,18 +22,38 @@ public class Address {
     @Pattern(regexp = "[0-9]{2}-[0-9]{3}",message = "WPISZ POPRAWNIE KOD POCZTOWY")
     private String zipCode;
 
-    @Pattern(regexp = "\\d\\D")
+    @Size (min=1,message = "NUMER ULICY MUSI MIEĆ JAKĄŚ WARTOŚC")
     private String streetNumber;
 
-   @OneToMany(mappedBy = "address")
-   private List <User> users = new ArrayList<>();
 
 //-----------------------------------------------------------------------------------------------------
 
     public Address() {
+
     }
 
-//-------------------------------------------------------------------------------------------------------
+    public Address(@Size(min = 2, message = "NAZWA ULICY MUSI POSIADAĆ CONAJMNIEJ 2 ZNAKI")
+                           String street, @Size(min = 2, message = "NAZWA MIASTA MUSI POSIADAĆ MINIMUM 2 ZNAKI")
+            String town, @Pattern(regexp = "[0-9]{2}-[0-9]{3}", message = "WPISZ POPRAWNIE KOD POCZTOWY") String zipCode,
+                   @Size(min = 1, message = "NUMER ULICY MUSI MIEĆ JAKĄŚ WARTOŚC") String streetNumber) {
+        this.street = street;
+        this.town = town;
+        this.zipCode = zipCode;
+        this.streetNumber = streetNumber;
+    }
+
+    public Address(long id, @Size(min = 2, message = "NAZWA ULICY MUSI POSIADAĆ CONAJMNIEJ 2 ZNAKI") String street,
+                   @Size(min = 2, message = "NAZWA MIASTA MUSI POSIADAĆ MINIMUM 2 ZNAKI") String town,
+                   @Pattern(regexp = "[0-9]{2}-[0-9]{3}", message = "WPISZ POPRAWNIE KOD POCZTOWY") String zipCode,
+                   @Size(min = 1, message = "NUMER ULICY MUSI MIEĆ JAKĄŚ WARTOŚC") String streetNumber) {
+        this.id = id;
+        this.street = street;
+        this.town = town;
+        this.zipCode = zipCode;
+        this.streetNumber = streetNumber;
+    }
+
+    //-------------------------------------------------------------------------------------------------------
 
 
     public long getId() {
@@ -81,13 +96,6 @@ public class Address {
         this.streetNumber = streetNumber;
     }
 
-    public List<User> getUsers() {
-        return users;
-    }
-
-    public void setUsers(List<User> users) {
-        this.users = users;
-    }
 
     @Override
     public String toString() {
@@ -97,7 +105,6 @@ public class Address {
                 ", town='" + town + '\'' +
                 ", zipCode='" + zipCode + '\'' +
                 ", streetNumber=" + streetNumber +
-                ", users=" + users +
                 '}';
     }
 }
