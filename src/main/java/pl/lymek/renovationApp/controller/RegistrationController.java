@@ -12,7 +12,6 @@ import pl.lymek.renovationApp.model.User;
 import pl.lymek.renovationApp.repository.CompanyRepository;
 import pl.lymek.renovationApp.repository.UserRepository;
 import pl.lymek.renovationApp.security.BCrypt;
-import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @RequestMapping("/registration")

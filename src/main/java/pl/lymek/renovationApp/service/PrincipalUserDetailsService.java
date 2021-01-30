@@ -27,13 +27,5 @@ public class PrincipalUserDetailsService implements UserDetailsService {
         return user.map(PrincipalDetails::new).get();
 
 
-//        if(user==null) {
-//
-//            throw new UsernameNotFoundException("Nie znaleziono usera");
-//        } else {
-//
-//            return new PrincipalDetails(user);
-//        }
-
     }
 }
