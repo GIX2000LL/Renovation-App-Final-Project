@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <title>UZYTKOWNIK</title>
@@ -15,7 +16,9 @@
                 <td><a href="/company"><button style="color: blue" >ZARZADZAJ FIRMĄ</button>
                 </a> </td>
                 <td style="width: 50px;"></td>
-                <td style="color: green; text-align: right"><h4>ZALOGOWANY UŻYTKOWNIK: ${currentUser.firstName}</h4>
+                <td style="color: green; text-align: right"><h4><sec:authorize access="isAuthenticated()">
+                    ZALOGOWANY UŻYTKOWNIK: <sec:authentication property="principal.User.firstName" />
+                </sec:authorize></h4>
                     <h4><a href="/logout"><button style="color: darkred" value="WYLOGUJ SIĘ">WYLOGUJ SIĘ</button></a> </h4></td>
             </tr>
         </table>
@@ -25,6 +28,7 @@
         <p style="color: blue;background-color: lightgray">
             <h2 style="color: blue">WITAJ W APLIKACJI ZARZĄDZAJĄCEJ TWOJA FIRMĄ</h2>
         </p>
+
 
     </div>
 </body>

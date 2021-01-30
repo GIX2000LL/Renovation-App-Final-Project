@@ -1,14 +1,18 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <html>
 <head>
     <title>EDYCJA UŻYTKOWNIKA</title>
 </head>
+
 <body style="background-color: lightgray">
+    <sec:authorize access="isAuthenticated()">
     <header style="width: 100%;background-color: wheat">
 
-        <div align="right"><h4 style="color: green">ZALOGOWANY UŻYTKOWNIK: ${currentUser.firstName}</h4></div>
+        <div align="right"><h4 style="color: green">ZALOGOWANY UŻYTKOWNIK: <sec:authentication property="principal.User.firstName" />
+        </h4></div>
 
     </header>
     <h3 align="center" style="color: blue">EDYCJA PROFILU UŻYTKOWNIKA</h3>
@@ -38,6 +42,7 @@
         <br/><br/>
 
     <div align="center"><a href="/user/userDetails"><button style="color: green">WRÓĆ</button> </a></div>
-
+    </sec:authorize>
+</body>
 </body>
 </html>

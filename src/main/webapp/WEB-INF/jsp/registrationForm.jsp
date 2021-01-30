@@ -12,9 +12,9 @@
         <h2 style="color: blue">ZAREJESTRUJ SIĘ W SYSTEMIE</h2>
 
 
-        <form method="post" action="/registration" style="background-color: lightgray">
+
+        <form:form method="post" modelAttribute="user">
             <table>
-            <form:form method="post" modelAttribute="user">
                 <tr><td>IMIĘ</td> <td>  <form:input path="firstName"/> </td></tr><br/>
                 <tr><td></td><td><form:errors path="firstName" cssStyle="color: red"/></td> </tr><br/>
 
@@ -28,11 +28,12 @@
 
                 <tr><td>TELEFON</td> <td>  <form:input path="phoneNumber"/> </td></tr><br/>
                 <tr><td></td><td><form:errors path="phoneNumber" cssStyle="color: red"/></td> </tr><br/>
+                <tr><td>NAZWA FIRMY</td> <td>  <form:input path="companyName"/> </td></tr><br/>
+                <tr><td></td><td><form:errors path="companyName" cssStyle="color: red"/></td> </tr><br/>
+                <tr><td></td><td>  <input style="color: blue" type="submit" value="STWÓRZ PROFIL"> </td></tr><br/>
+
             </form:form>
 
-                <tr><td>NAZWA FIRMY</td> <td>  <input type="text" name="companyName"/> </td></tr><br/>
-                <tr></tr><td></td><br/>
-                <tr><td></td><td>  <input style="color: blue" type="submit" value="STWÓRZ PROFIL"> </td></tr><br/>
             </table>
         </form>
 

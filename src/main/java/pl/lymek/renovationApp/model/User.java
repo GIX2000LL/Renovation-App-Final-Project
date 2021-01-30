@@ -36,6 +36,9 @@ public class User {
 
     private String securityRole;
 
+    @Size(min=2, message = "NAZWA FIRMY MUSI MIEĆ CONAJMNIEJ 2 ZNAKI")
+    private String companyName;
+
 
 // -----------------------------------------------------------------------------------------------------
 
@@ -128,6 +131,14 @@ public class User {
         this.securityRole = securityRole;
     }
 
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -141,6 +152,7 @@ public class User {
                 ", address=" + address +
                 ", company=" + company +
                 ", securityRole='" + securityRole + '\'' +
+                ", companyName='" + companyName + '\'' +
                 '}';
     }
 }

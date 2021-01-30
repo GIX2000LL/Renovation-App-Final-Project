@@ -26,14 +26,14 @@ public class Company {
     @Pattern(regexp = "\\d{9}")
     private String phoneNumber;
 
-    @OneToMany
-    private List<Employee> employees;
+//    @OneToMany
+//    private List<Employee> employees;
 
     @OneToOne
     private User owner;
 
-    @OneToMany(mappedBy = "company")
-    private List <Commission> commissions;
+//    @OneToMany(mappedBy = "company")
+//    private List <Commission> commissions;
 
 //------------------------------------------------------------------------------------------------
 
@@ -87,13 +87,13 @@ public class Company {
         this.phoneNumber = phoneNumber;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
+//    public List<Employee> getEmployees() {
+//        return employees;
+//    }
+//
+//    public void setEmployees(List<Employee> employees) {
+//        this.employees = employees;
+//    }
 
     public User getOwner() {
         return owner;
@@ -102,26 +102,26 @@ public class Company {
     public void setOwner(User owner) {
         this.owner = owner;
     }
+//
+//    public List<Commission> getCommissions() {
+//        return commissions;
+//    }
+//
+//    public void setCommissions(List<Commission> commissions) {
+//        this.commissions = commissions;
+//    }
 
-    public List<Commission> getCommissions() {
-        return commissions;
-    }
-
-    public void setCommissions(List<Commission> commissions) {
-        this.commissions = commissions;
-    }
-
-    @Override
-    public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address=" + address +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", employees=" + employees +
-                ", owner=" + owner +
-                ", commissions=" + commissions +
-                '}';
-    }
+//    @Override
+//    public String toString() {
+//        return "Company{" +
+//                "id=" + id +
+//                ", name='" + name + '\'' +
+//                ", address=" + address +
+//                ", email='" + email + '\'' +
+//                ", phoneNumber='" + phoneNumber + '\'' +
+//                ", employees=" + employees +
+//                ", owner=" + owner +
+//                ", commissions=" + commissions +
+//                '}';
+//    }
 }

@@ -12,7 +12,6 @@ import pl.lymek.renovationApp.model.User;
 import pl.lymek.renovationApp.repository.CompanyRepository;
 import pl.lymek.renovationApp.repository.UserRepository;
 import pl.lymek.renovationApp.security.BCrypt;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
@@ -37,7 +36,7 @@ public class RegistrationController{
     }
 
     @PostMapping
-    public String showFormResult (@ModelAttribute @Valid User user, BindingResult result, HttpServletRequest request) {
+    public String showFormResult (@ModelAttribute("user") @Valid User user, BindingResult result) {
 
         if(result.hasErrors()){
 
@@ -46,9 +45,9 @@ public class RegistrationController{
 
             user.setPassword(BCrypt.hashpw(user.getPassword(),BCrypt.gensalt()));
             user.setSecurityRole("ROLE_OWNER");
-//            user.setActive(true);
 
-            Company newCompany = new Company(request.getParameter("companyName"));
+            Company newCompany = new Company();
+            newCompany.setName(user.getCompanyName());
             companyRepository.save(newCompany);
             user.setCompany(newCompany);
             newCompany.setOwner(user);

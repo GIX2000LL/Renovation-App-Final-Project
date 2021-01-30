@@ -11,12 +11,15 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.lymek.renovationApp.model.Address;
 import pl.lymek.renovationApp.model.User;
 import pl.lymek.renovationApp.repository.AddressRepository;
 import pl.lymek.renovationApp.repository.UserRepository;
 import pl.lymek.renovationApp.security.PrincipalDetails;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -37,16 +40,8 @@ public class UserController {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
     }
-//----------------------------------------------------------------------------------------------------
 
-    @ModelAttribute(name = "currentUser")
-    protected User getCurrentUser () {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principalDetails=(PrincipalDetails) auth.getPrincipal();
-
-        return principalDetails.getUser();
-    }
-//----------------------------------------------------------------------------------------------------
+//------------------------------------------------------------------------------------------------------------
 
     @GetMapping
     public String showUserZone (){
@@ -55,16 +50,84 @@ public class UserController {
     }
 
     @GetMapping("/userDetails")
-    public String goOnCurrentUserProfile (){
+    public String goOnCurrentUserProfile (Model model){
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        PrincipalDetails principalDetails= (PrincipalDetails) auth.getPrincipal();
+        Address principalAddress =principalDetails.getUser().getAddress();
+
+        if(principalAddress !=null) {
+            model.addAttribute("address",principalAddress);
+        }
 
         return "userDetails";
     }
 
-//---------------------------------------------------------------------------------------------------------
-
-    @PreAuthorize("hasAnyRole('OWNER','SUPER-ADMIN')")
+    //---------------------------------------------------------------------
     @GetMapping("/edit/{id}")
     public String loadUserEditForm (@PathVariable long id,Model model) {
+
+        User user = getCurrentUserById(id);
+        model.addAttribute("userToEdit",user);
+
+        return "userForm";
+    }
+
+    @PostMapping("/edit/{id}")
+    public String editUserDetails (@ModelAttribute("userToEdit") @Valid User userAfterEdition, BindingResult result) {
+
+        if(result.hasErrors()) {
+
+            return "userForm";
+        } else {
+
+            userRepository.save(userAfterEdition);
+
+            Address address =userAfterEdition.getAddress();
+            if (address == null) {
+
+                return "addressAnnotation";
+            }
+        }
+
+        return "redirect:/user/userDetails";
+    }
+
+    @GetMapping ("/addressEdition/{id}")
+    public String showUserAddressEditionForm (@PathVariable long id, Model model) {
+
+        User user = getCurrentUserById(id);
+
+        if(user.getAddress()==null) {
+            model.addAttribute("address",new Address());
+        } else {
+            model.addAttribute("address",user.getAddress());
+        }
+
+        return "userAddressEditionForm";
+    }
+
+    @PostMapping("/addressEdition/{id}")
+    public String editUserAddressDetails (@PathVariable long id,@ModelAttribute("address") @Valid Address addressAfterEdition,
+                                          BindingResult result) {
+
+        if(result.hasErrors()) {
+
+            return "userAddressEditionForm";
+        } else {
+
+               User user = getCurrentUserById(id);
+               addressRepository.save(addressAfterEdition);
+               user.setAddress(addressAfterEdition);
+               userRepository.save(user);
+        }
+
+        return "redirect:/user/userDetails";
+    }
+
+//---------------------------------------------------------------------------------------------------------------------------------------
+
+    private User getCurrentUserById (long id) {
 
         Optional <User> userOptional=userRepository.findById(id);
 
@@ -72,29 +135,7 @@ public class UserController {
                 .findAny()
                 .orElseThrow(NoSuchElementException::new);
 
-        model.addAttribute("userToEdit",user);
-
-        return "userForm";
-    }
-
-    @PostMapping("/edit/{id}")
-    public String showUserAndAddressForm (@ModelAttribute("userToEdit") User userAfterEdition) {
-
-
-        return "redirect:/user/userDetails";
-    }
-
-//---------------------------------------------------------------------------------------------------------------------------------------
-    public void reloadPrincipal () {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-
-        List<GrantedAuthority> updatedAuthorities = new ArrayList<>(auth.getAuthorities());
-        updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_OWNER"));
-        updatedAuthorities.add(new SimpleGrantedAuthority("ROLE_SUPER-ADMIN"));
-
-        Authentication newAuth = new UsernamePasswordAuthenticationToken(auth.getPrincipal(), auth.getCredentials(), updatedAuthorities);
-
-        SecurityContextHolder.getContext().setAuthentication(newAuth);
+        return user;
     }
 
 }

@@ -42,6 +42,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
         security.csrf().disable();
         security.formLogin().loginPage("/login").defaultSuccessUrl("/user");
+        security.logout().logoutSuccessUrl("/").permitAll();
 
         security.authorizeRequests()
                 .antMatchers("/user**").hasAnyRole("OWNER","SUPER-ADMIN")
