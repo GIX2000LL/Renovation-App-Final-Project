@@ -23,11 +23,11 @@ public class Company {
 
     private String email;
 
-    @Pattern(regexp = "\\d{9}")
+    @Pattern(regexp = "\\d{9}", message = "NUMER TELEFONU SKŁĄDA SIĘ Z 9 CYFR")
     private String phoneNumber;
 
-//    @OneToMany
-//    private List<Employee> employees;
+    @OneToMany
+    private List<Employee> employees;
 
     @OneToOne
     private User owner;
@@ -87,13 +87,13 @@ public class Company {
         this.phoneNumber = phoneNumber;
     }
 
-//    public List<Employee> getEmployees() {
-//        return employees;
-//    }
-//
-//    public void setEmployees(List<Employee> employees) {
-//        this.employees = employees;
-//    }
+    public List<Employee> getEmployees() {
+        return employees;
+    }
+
+    public void setEmployees(List<Employee> employees) {
+        this.employees = employees;
+    }
 
     public User getOwner() {
         return owner;
@@ -111,17 +111,17 @@ public class Company {
 //        this.commissions = commissions;
 //    }
 
-//    @Override
-//    public String toString() {
-//        return "Company{" +
-//                "id=" + id +
-//                ", name='" + name + '\'' +
-//                ", address=" + address +
-//                ", email='" + email + '\'' +
-//                ", phoneNumber='" + phoneNumber + '\'' +
-//                ", employees=" + employees +
-//                ", owner=" + owner +
-//                ", commissions=" + commissions +
-//                '}';
-//    }
+
+    @Override
+    public String toString() {
+        return "Company{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address=" + address +
+                ", email='" + email + '\'' +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", employees=" + employees +
+                ", owner=" + owner +
+                '}';
+    }
 }

@@ -25,7 +25,7 @@
             <tr><td>EMAIL: </td><td><sec:authentication property="principal.User.email" /></td></tr>
             <tr><td>NUMER TELEFONU: </td><td><sec:authentication property="principal.User.phoneNumber" /></td></tr>
             <tr><td>NAZWA FIRMY: </td><td><sec:authentication property="principal.User.company.name" /></td></tr>
-            <tr><td>ADRES: </td> <td>
+            <tr><td>ADRES PRYWATNY: </td> <td>
                 <c:if test="${not empty address}">
                 <sec:authentication property="principal.User.address.street" />
                 <sec:authentication property="principal.User.address.streetNumber" /><br/>
@@ -41,8 +41,8 @@
         <p></p>
 
         <div align="center">
-            <form method="get" action="/user"><button style="color: blue" >WRÓĆ</button></form>
-            <a href="/company"><button style="color: blue"> PRZEJDŹ DO SWOJEJ FIRMY</button> </a><br/><br/>
+            <form method="get" action="/user"><button style="color: darkred" >WRÓĆ</button></form>
+            <a href="/company"><button style="color: green"> PRZEJDŹ DO SWOJEJ FIRMY</button> </a><br/><br/>
             <a href="/user/edit/<sec:authentication property="principal.User.id" />"><button style="color: blue" >
                 EDYTUJ SWÓJ PROFIL</button> </a><br/><br/>
             <a href="/user/addressEdition/<sec:authentication property="principal.User.id" />"><button style="color: blue">EDYTUJ DANE ADRESOWE</button> </a>

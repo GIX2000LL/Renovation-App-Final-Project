@@ -1,6 +1,7 @@
 package pl.lymek.renovationApp.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Entity
@@ -9,18 +10,21 @@ public class Employee {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     private long id;
+
+    @Size (min = 2, message = "IMIĘ MUSI SIĘ SKŁADAC Z MINIMUM 2 ZNAKÓW")
     private String firstName;
+
+    @Size (min = 2, message = "NAZWISKO MUSI SIĘ SKŁADAC Z MINIMUM 2 ZNAKÓW")
     private String lastName;
 
-    @ManyToOne
+    @OneToOne
     private Address address;
 
     private double hourlyRate;
 
-    @ManyToMany(mappedBy = "employees")
-    private List<Commission> commissions;
+//    @ManyToMany(mappedBy = "employees")
+//    private List<Commission> commissions;
 
 //---------------------------------------------------------------------------------------------------
 
@@ -69,13 +73,15 @@ public class Employee {
         this.hourlyRate = hourlyRate;
     }
 
-    public List<Commission> getCommissions() {
-        return commissions;
-    }
+//    public List<Commission> getCommissions() {
+//        return commissions;
+//    }
+//
+//    public void setCommissions(List<Commission> commissions) {
+//        this.commissions = commissions;
+//    }
 
-    public void setCommissions(List<Commission> commissions) {
-        this.commissions = commissions;
-    }
+
 
 
 }
