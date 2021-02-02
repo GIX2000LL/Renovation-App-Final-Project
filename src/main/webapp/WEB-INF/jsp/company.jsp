@@ -14,7 +14,7 @@
                 <button style="color: blue" >DANE FIRMOWE</button>
             </a> </td>
             <td style="width: 20px;"></td>
-            <td><a href="/company/employees"><button style="color: blue" >PRACOWNICY</button>
+            <td><a href="/employees"><button style="color: blue" >PRACOWNICY</button>
             </a> </td>
             <td style="width: 50px;"></td>
             <td><a href="/company/commissions"><button style="color: blue" >ZLECENIA</button>

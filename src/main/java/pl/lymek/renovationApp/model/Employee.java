@@ -1,7 +1,10 @@
 package pl.lymek.renovationApp.model;
 
+import org.springframework.format.annotation.NumberFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -21,7 +24,16 @@ public class Employee {
     @OneToOne
     private Address address;
 
+    @NumberFormat
     private double hourlyRate;
+
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name = "employees_skills",joinColumns = @JoinColumn(name = "employee_id"),
+            inverseJoinColumns = @JoinColumn(name = "skill_id"))
+    private List <Skill> skills=new ArrayList<>();
+
+    @ManyToOne
+    private Company company;
 
 //    @ManyToMany(mappedBy = "employees")
 //    private List<Commission> commissions;
@@ -73,7 +85,15 @@ public class Employee {
         this.hourlyRate = hourlyRate;
     }
 
-//    public List<Commission> getCommissions() {
+    public List<Skill> getSkills() {
+        return skills;
+    }
+
+    public void setSkills(List<Skill> skills) {
+        this.skills = skills;
+    }
+
+    //    public List<Commission> getCommissions() {
 //        return commissions;
 //    }
 //
@@ -82,6 +102,24 @@ public class Employee {
 //    }
 
 
+    public Company getCompany() {
+        return company;
+    }
 
+    public void setCompany(Company company) {
+        this.company = company;
+    }
 
+    @Override
+    public String toString() {
+        return "Employee{" +
+                "id=" + id +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address=" + address +
+                ", hourlyRate=" + hourlyRate +
+                ", skills=" + skills +
+                ", company=" + company +
+                '}';
+    }
 }

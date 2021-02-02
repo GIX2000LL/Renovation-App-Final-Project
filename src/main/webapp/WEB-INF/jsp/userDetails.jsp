@@ -20,6 +20,7 @@
     <div style="width: 100%">
         <table align="center" style="background-color: bisque;width: 50%;height: 30%; text-align: center;font-max-size: large">
             <th><h3 style="color: red">DANE WŁAŚCICIELA</h3></th>
+<%--            <tr><td>IMIĘ: </td><td>${user.firstName}</td></tr>--%>
             <tr><td>IMIĘ: </td><td><sec:authentication property="principal.User.firstName" /></td></tr>
             <tr><td>NAZWISKO: </td><td><sec:authentication property="principal.User.lastName" /></td></tr>
             <tr><td>EMAIL: </td><td><sec:authentication property="principal.User.email" /></td></tr>

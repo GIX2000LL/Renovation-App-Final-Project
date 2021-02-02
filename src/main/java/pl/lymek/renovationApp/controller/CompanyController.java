@@ -2,7 +2,6 @@ package pl.lymek.renovationApp.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -15,7 +14,6 @@ import pl.lymek.renovationApp.model.User;
 import pl.lymek.renovationApp.repository.AddressRepository;
 import pl.lymek.renovationApp.repository.CompanyRepository;
 import pl.lymek.renovationApp.security.PrincipalDetails;
-
 import javax.validation.Valid;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -26,8 +24,8 @@ public class CompanyController {
 
     private Logger logger = LoggerFactory.getLogger("logger");
 
-    private CompanyRepository companyRepository;
-    private AddressRepository addressRepository;
+    private final CompanyRepository companyRepository;
+    private final AddressRepository addressRepository;
 
     public CompanyController(CompanyRepository companyRepository, AddressRepository addressRepository) {
         this.companyRepository = companyRepository;
@@ -80,8 +78,6 @@ public class CompanyController {
             return "companyForm";
         } else {
 
-//            logger.info(companyAfterEdition.toString());
-
             companyRepository.save(companyAfterEdition);
 
             Address address =companyAfterEdition.getAddress();
@@ -89,8 +85,6 @@ public class CompanyController {
 
                 return "companyAddressAnnotation";
             }
-
-            logger.info(companyAfterEdition.toString());
 
             return "redirect:/company/companyDetails";
         }
@@ -121,10 +115,8 @@ public class CompanyController {
             return "companyAddressForm";
         } else {
 
-            logger.info(addressAfterEdition.toString());
             addressRepository.save(addressAfterEdition);
             Company company = getCurrentUserCompanyById(id);
-            logger.info(company.getName());
             company.setAddress(addressAfterEdition);
             companyRepository.save(company);
         }

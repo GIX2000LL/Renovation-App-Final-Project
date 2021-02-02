@@ -1,5 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -8,7 +9,9 @@
 <body style="background-color: lightgray">
 <header style="width: 100%;background-color: wheat">
 
-    <div align="right"><h4 style="color: green">ZALOGOWANY UŻYTKOWNIK: ${currentUser.firstName}</h4></div>
+    <div align="right"><h4 style="color: green">ZALOGOWANY UŻYTKOWNIK: ${currentUser.firstName}</h4>
+        <h4 style="color: green">FIRMA: <sec:authentication property="principal.User.company.name" />
+        </h4></div>
 
 </header>
 <h3 align="center" style="color: blue">EDYCJA DANYCH FIRMY</h3>
@@ -19,6 +22,8 @@
 
             <tr><td><form:input path="id" type="hidden"/></td></tr>
             <tr><td><form:input path="owner.id" type="hidden"/></td></tr>
+            <tr><td><form:input path="address.id" type="hidden"/></td></tr>
+
             <tr><td>NAZWA</td> <td>  <form:input path="name"/> </td></tr><br/>
             <tr><td></td><td><form:errors path="name" cssStyle="color: red"/></td> </tr><br/>
             <tr><td>EMAIL</td> <td>  <form:input path="email"/> </td></tr><br/>

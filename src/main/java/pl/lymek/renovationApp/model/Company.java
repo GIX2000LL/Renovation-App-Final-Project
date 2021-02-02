@@ -26,7 +26,7 @@ public class Company {
     @Pattern(regexp = "\\d{9}", message = "NUMER TELEFONU SKŁĄDA SIĘ Z 9 CYFR")
     private String phoneNumber;
 
-    @OneToMany
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "company")
     private List<Employee> employees;
 
     @OneToOne
@@ -110,6 +110,8 @@ public class Company {
 //    public void setCommissions(List<Commission> commissions) {
 //        this.commissions = commissions;
 //    }
+
+
 
 
     @Override

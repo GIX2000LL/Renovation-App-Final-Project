@@ -3,9 +3,7 @@ package pl.lymek.renovationApp.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,8 +15,6 @@ import pl.lymek.renovationApp.repository.AddressRepository;
 import pl.lymek.renovationApp.repository.UserRepository;
 import pl.lymek.renovationApp.security.PrincipalDetails;
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
@@ -49,7 +45,8 @@ public class UserController {
     @GetMapping("/userDetails")
     public String goOnCurrentUserProfile (Model model){
 
-       User user = getCurrentUser();
+        User user = getCurrentUser();
+        model.addAttribute("user",user);
 
         if(user.getAddress() !=null) {
             model.addAttribute("address",user.getAddress());
@@ -133,23 +130,14 @@ public class UserController {
         return user;
     }
 
-    protected User getCurrentUser () {
+//-------------------------------------------------------------------------------------------------------------------
+protected User getCurrentUser () {
 
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
+    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+    PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
 
-        return principalDetails.getUser();
-    }
+    return principalDetails.getUser();
+}
 
-    private void refreshPrincipal () {
-
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        List<GrantedAuthority> updatedAuthorities = new ArrayList<>(authentication.getAuthorities());
-
-        Authentication newAuthentication = new UsernamePasswordAuthenticationToken(authentication.getPrincipal(),
-                authentication.getCredentials(),updatedAuthorities);
-
-        SecurityContextHolder.getContext().setAuthentication(newAuthentication);
-    }
 
 }

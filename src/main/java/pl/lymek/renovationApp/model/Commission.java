@@ -23,10 +23,10 @@ public class Commission {
     @OneToOne
     private Schedule schedule;
 
-    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-    @JoinTable(name = "commissions_employees",joinColumns = @JoinColumn(name = "commission_id"),
-            inverseJoinColumns = @JoinColumn(name = "employee_id"))
-    private List<Employee> employees;
+//    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+//    @JoinTable(name = "commissions_employees",joinColumns = @JoinColumn(name = "commission_id"),
+//            inverseJoinColumns = @JoinColumn(name = "employee_id"))
+//    private List<Employee> employees;
 
     @ManyToOne
     private Company company;
@@ -86,13 +86,13 @@ public class Commission {
         this.schedule = schedule;
     }
 
-    public List<Employee> getEmployees() {
-        return employees;
-    }
-
-    public void setEmployees(List<Employee> employees) {
-        this.employees = employees;
-    }
+//    public List<Employee> getEmployees() {
+//        return employees;
+//    }
+//
+//    public void setEmployees(List<Employee> employees) {
+//        this.employees = employees;
+//    }
 
     public String getName() {
         return name;
@@ -110,18 +110,4 @@ public class Commission {
         this.company = company;
     }
 
-    @Override
-    public String toString() {
-        return "Commission{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", principal='" + principal + '\'' +
-                ", commissionStart=" + commissionStart +
-                ", commissionEnd=" + commissionEnd +
-                ", estimate=" + estimate +
-                ", schedule=" + schedule +
-                ", employees=" + employees +
-                ", company=" + company +
-                '}';
-    }
 }

@@ -9,7 +9,9 @@
 <sec:authorize access="isAuthenticated()">
 <header style="width: 100%;background-color: wheat;height: 10%">
 
-    <div align="right"><h4 style="color: green">ZALOGOWANY UŻYTKOWNIK: <sec:authentication property="principal.User.firstName"/></h4></div>
+    <div align="right"><h4 style="color: green">ZALOGOWANY UŻYTKOWNIK: <sec:authentication property="principal.User.firstName"/></h4>
+        <h4 style="color: green">FIRMA: <sec:authentication property="principal.User.company.name" />
+        </h4></div>
 
 </header>
 <br/><br/>
@@ -43,7 +45,7 @@
     <a href="/company"><button style="color: darkred"> WRÓĆ</button> </a><br/><br/>
     <a href="/company/edit/<sec:authentication property="principal.User.company.id"/>"><button style="color: blue" >EDYTUJ DANE FIRMOWE</button> </a><br/><br/>
     <a href="/company/companyAddressEdit/<sec:authentication property="principal.User.company.id"/>"><button style="color: blue" >EDYTUJ ADRES FIRMY</button> </a><br/><br/>
-    <a href="/company/employees"><button style="color: green"> PRZEJDŹ DO PRACOWNIKÓW</button> </a>
+    <a href="/employees"><button style="color: green"> PRZEJDŹ DO PRACOWNIKÓW</button> </a>
     <a href="/company/commissions"><button style="color: green"> PRZEJDŹ DO ZLECEŃ</button> </a><br/><br/>
 
 </div>
