@@ -31,7 +31,7 @@ public class User {
     @ManyToOne
     private Address address;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     private Company company;
 
     private String securityRole;
@@ -139,20 +139,4 @@ public class User {
         this.companyName = companyName;
     }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", firstName='" + firstName + '\'' +
-                ", lastName='" + lastName + '\'' +
-                ", password='" + password + '\'' +
-                ", isActive=" + isActive +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", email='" + email + '\'' +
-                ", address=" + address +
-                ", company=" + company +
-                ", securityRole='" + securityRole + '\'' +
-                ", companyName='" + companyName + '\'' +
-                '}';
-    }
 }

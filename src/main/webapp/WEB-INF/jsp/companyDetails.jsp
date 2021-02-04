@@ -46,7 +46,7 @@
     <a href="/company/edit/<sec:authentication property="principal.User.company.id"/>"><button style="color: blue" >EDYTUJ DANE FIRMOWE</button> </a><br/><br/>
     <a href="/company/companyAddressEdit/<sec:authentication property="principal.User.company.id"/>"><button style="color: blue" >EDYTUJ ADRES FIRMY</button> </a><br/><br/>
     <a href="/employees"><button style="color: green"> PRZEJDŹ DO PRACOWNIKÓW</button> </a>
-    <a href="/company/commissions"><button style="color: green"> PRZEJDŹ DO ZLECEŃ</button> </a><br/><br/>
+    <a href="/commissions"><button style="color: green"> PRZEJDŹ DO ZLECEŃ</button> </a><br/><br/>
 
 </div>
 </sec:authorize>

@@ -31,15 +31,11 @@ public class PrincipalDetails implements UserDetails {
                 .collect(Collectors.toList());
     }
 
-    public PrincipalDetails() {
-    }
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
 
         return authorities;
 
-//        return Collections.singleton(new SimpleGrantedAuthority("SUPER-ADMIN"));
     }
 
     @Override

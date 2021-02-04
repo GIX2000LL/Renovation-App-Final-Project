@@ -1,9 +1,13 @@
 package pl.lymek.renovationApp.model;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -29,11 +33,12 @@ public class Company {
     @OneToMany(fetch = FetchType.EAGER, mappedBy = "company")
     private List<Employee> employees;
 
-    @OneToOne
+    @OneToOne (fetch = FetchType.EAGER)
     private User owner;
 
-//    @OneToMany(mappedBy = "company")
-//    private List <Commission> commissions;
+    @LazyCollection(LazyCollectionOption.FALSE)
+    @OneToMany(mappedBy = "company")
+    private List <Commission> commissions;
 
 //------------------------------------------------------------------------------------------------
 
@@ -102,28 +107,12 @@ public class Company {
     public void setOwner(User owner) {
         this.owner = owner;
     }
-//
-//    public List<Commission> getCommissions() {
-//        return commissions;
-//    }
-//
-//    public void setCommissions(List<Commission> commissions) {
-//        this.commissions = commissions;
-//    }
 
+    public List<Commission> getCommissions() {
+        return commissions;
+    }
 
-
-
-    @Override
-    public String toString() {
-        return "Company{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address=" + address +
-                ", email='" + email + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", employees=" + employees +
-                ", owner=" + owner +
-                '}';
+    public void setCommissions(List<Commission> commissions) {
+        this.commissions = commissions;
     }
 }

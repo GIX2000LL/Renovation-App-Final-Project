@@ -35,8 +35,8 @@ public class Employee {
     @ManyToOne
     private Company company;
 
-//    @ManyToMany(mappedBy = "employees")
-//    private List<Commission> commissions;
+    @ManyToMany(mappedBy = "employees")
+    private List<Commission> commissions;
 
 //---------------------------------------------------------------------------------------------------
 
@@ -93,14 +93,6 @@ public class Employee {
         this.skills = skills;
     }
 
-    //    public List<Commission> getCommissions() {
-//        return commissions;
-//    }
-//
-//    public void setCommissions(List<Commission> commissions) {
-//        this.commissions = commissions;
-//    }
-
 
     public Company getCompany() {
         return company;
@@ -108,6 +100,14 @@ public class Employee {
 
     public void setCompany(Company company) {
         this.company = company;
+    }
+
+    public List<Commission> getCommissions() {
+        return commissions;
+    }
+
+    public void setCommissions(List<Commission> commissions) {
+        this.commissions = commissions;
     }
 
     @Override
@@ -120,6 +120,7 @@ public class Employee {
                 ", hourlyRate=" + hourlyRate +
                 ", skills=" + skills +
                 ", company=" + company +
+                ", commissions=" + commissions +
                 '}';
     }
 }

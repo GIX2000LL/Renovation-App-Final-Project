@@ -96,15 +96,4 @@ public class Address {
         this.streetNumber = streetNumber;
     }
 
-
-    @Override
-    public String toString() {
-        return "Address{" +
-                "id=" + id +
-                ", street='" + street + '\'' +
-                ", town='" + town + '\'' +
-                ", zipCode='" + zipCode + '\'' +
-                ", streetNumber=" + streetNumber +
-                '}';
-    }
 }

@@ -11,7 +11,7 @@
 <sec:authorize access="isAuthenticated()">
     <div class="container">
         <h1>W TWOJEJ FIRMIE NIE MA JESZCZE ŻADNEGO PRACOWNIKA, CZY CHCESZ ICH DODAĆ ?</h1>
-        <a href="/employees/add/ <sec:authentication property="principal.User.company.id" />"><button>STWÓRZ PRACOWNIKA</button></a>
+        <a href="/employees/add"><button>STWÓRZ PRACOWNIKA</button></a>
         <a href="/company"><button>WRÓĆ</button></a>
     </div>
 </sec:authorize>

@@ -15,6 +15,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.ui.DefaultLoginPageGeneratingFilter;
 import pl.lymek.renovationApp.service.PrincipalUserDetailsService;
 
+import javax.transaction.Transactional;
+
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @Configuration
 @EnableJpaRepositories(basePackages = "pl.lymek")
@@ -23,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private PrincipalUserDetailsService userDetailsService;
+
 
 
     @Override
@@ -47,7 +50,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         security.authorizeRequests()
                 .antMatchers("/user**").hasAnyRole("OWNER","SUPER-ADMIN")
                 .antMatchers("/","/registration").permitAll();
-
 
 
     }

@@ -2,21 +2,17 @@ package pl.lymek.renovationApp.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.lymek.renovationApp.components.CurrentUser;
 import pl.lymek.renovationApp.model.Address;
 import pl.lymek.renovationApp.model.Company;
 import pl.lymek.renovationApp.model.User;
 import pl.lymek.renovationApp.repository.AddressRepository;
 import pl.lymek.renovationApp.repository.CompanyRepository;
-import pl.lymek.renovationApp.security.PrincipalDetails;
 import javax.validation.Valid;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 @RequestMapping("/company")
 @Controller
@@ -26,10 +22,12 @@ public class CompanyController {
 
     private final CompanyRepository companyRepository;
     private final AddressRepository addressRepository;
+    private final CurrentUser currentUser1;
 
-    public CompanyController(CompanyRepository companyRepository, AddressRepository addressRepository) {
+    public CompanyController(CompanyRepository companyRepository, AddressRepository addressRepository, CurrentUser currentUser1) {
         this.companyRepository = companyRepository;
         this.addressRepository = addressRepository;
+        this.currentUser1 = currentUser1;
     }
 
     //------------------------------------------------------------------------------------------------------
@@ -42,7 +40,8 @@ public class CompanyController {
 
     @GetMapping("/companyDetails")
     public String showCompanyDetails(Model model) {
-        User currentUser = getCurrentUser();
+
+        User currentUser = currentUser1.getCurrentUser();
 
         if(currentUser.getCompany().getAddress()!=null) {
 
@@ -61,7 +60,7 @@ public class CompanyController {
     @GetMapping("/edit/{id}")
     public String loadCompanyEditForm(@PathVariable long id, Model model) {
 
-        Company company = getCurrentUserCompanyById(id);
+        Company company = currentUser1.getCurrentUserCompanyById(id);
 
         model.addAttribute("companyToEdit", company);
 
@@ -93,7 +92,7 @@ public class CompanyController {
     @GetMapping ("/companyAddressEdit/{id}")
     public  String showCompanyAddressForm (@PathVariable long id, Model model) {
 
-        User user = getCurrentUser();
+        User user = currentUser1.getCurrentUser();
         if (user.getCompany().getAddress()==null) {
             model.addAttribute("address",new Address());
             model.addAttribute("companyId",user.getCompany().getId());
@@ -116,34 +115,12 @@ public class CompanyController {
         } else {
 
             addressRepository.save(addressAfterEdition);
-            Company company = getCurrentUserCompanyById(id);
+            Company company = currentUser1.getCurrentUserCompanyById(id);
             company.setAddress(addressAfterEdition);
             companyRepository.save(company);
         }
 
         return "redirect:/company/companyDetails";
-    }
-
-
-    //--------------------------------------------------------------------------------------------------------------
-
-    private User getCurrentUser () {
-
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
-
-        return principalDetails.getUser();
-    }
-
-    private Company getCurrentUserCompanyById (long id) {
-
-        Optional<Company> companyOptional = companyRepository.findById(id);
-
-        Company company = companyOptional.stream()
-                .findAny()
-                .orElseThrow(NoSuchElementException::new);
-
-        return company;
     }
 
 }

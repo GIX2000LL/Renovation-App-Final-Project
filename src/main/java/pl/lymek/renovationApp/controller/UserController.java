@@ -2,21 +2,16 @@ package pl.lymek.renovationApp.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.lymek.renovationApp.components.CurrentUser;
 import pl.lymek.renovationApp.model.Address;
 import pl.lymek.renovationApp.model.User;
 import pl.lymek.renovationApp.repository.AddressRepository;
 import pl.lymek.renovationApp.repository.UserRepository;
-import pl.lymek.renovationApp.security.PrincipalDetails;
 import javax.validation.Valid;
-import java.util.NoSuchElementException;
-import java.util.Optional;
 
 
 @RequestMapping("/user")
@@ -27,14 +22,15 @@ public class UserController {
 
     private final UserRepository userRepository;
     private final AddressRepository addressRepository;
+    private final CurrentUser currentUser;
 
-    @Autowired
-    public UserController(UserRepository userRepository, AddressRepository addressRepository) {
+    public UserController(UserRepository userRepository, AddressRepository addressRepository, CurrentUser currentUser) {
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
+        this.currentUser = currentUser;
     }
 
-//------------------------------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------------------------------
 
     @GetMapping
     public String showUserZone (){
@@ -45,7 +41,7 @@ public class UserController {
     @GetMapping("/userDetails")
     public String goOnCurrentUserProfile (Model model){
 
-        User user = getCurrentUser();
+        User user = currentUser.getCurrentUser();
         model.addAttribute("user",user);
 
         if(user.getAddress() !=null) {
@@ -55,11 +51,10 @@ public class UserController {
         return "userDetails";
     }
 
-    //---------------------------------------------------------------------
     @GetMapping("/edit/{id}")
     public String loadUserEditForm (@PathVariable long id,Model model) {
 
-        User user = getCurrentUserById(id);
+        User user = currentUser.getCurrentUserById(id);
         model.addAttribute("userToEdit",user);
 
         return "userForm";
@@ -82,13 +77,14 @@ public class UserController {
             }
         }
 
+
         return "redirect:/user/userDetails";
     }
 
     @GetMapping ("/addressEdition/{id}")
     public String showUserAddressEditionForm (@PathVariable long id, Model model) {
 
-        User user = getCurrentUserById(id);
+        User user = currentUser.getCurrentUserById(id);
 
         if(user.getAddress()==null) {
             model.addAttribute("address",new Address());
@@ -108,7 +104,7 @@ public class UserController {
             return "userAddressEditionForm";
         } else {
 
-               User user = getCurrentUserById(id);
+               User user = currentUser.getCurrentUserById(id);
                addressRepository.save(addressAfterEdition);
                user.setAddress(addressAfterEdition);
                userRepository.save(user);
@@ -116,28 +112,5 @@ public class UserController {
 
         return "redirect:/user/userDetails";
     }
-
-//---------------------------------------------------------------------------------------------------------------------------------------
-
-    private User getCurrentUserById (long id) {
-
-        Optional <User> userOptional=userRepository.findById(id);
-
-        User user = userOptional.stream()
-                .findAny()
-                .orElseThrow(NoSuchElementException::new);
-
-        return user;
-    }
-
-//-------------------------------------------------------------------------------------------------------------------
-protected User getCurrentUser () {
-
-    Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-    PrincipalDetails principalDetails = (PrincipalDetails) auth.getPrincipal();
-
-    return principalDetails.getUser();
-}
-
 
 }

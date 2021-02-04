@@ -1,8 +1,14 @@
 package pl.lymek.renovationApp.model;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import javax.persistence.*;
+import javax.validation.constraints.Future;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Table(name = "commissions")
@@ -12,23 +18,32 @@ public class Commission {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+    @Size(min = 1,message = "NAZWA MUSI MIEĆ CONAJMNIEJ 1 ZNAK")
     private String name;
-    private String principal;
+
+    @NotNull(message = "PROSZE WYBRAĆ KIEROWNIKA ZLECENIA")
+    @OneToOne
+    private Employee leader;
+
+    @NotNull(message = "WYBIERZ DATĘ ROZPOCZĘCIA ZLECENIA")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
     private LocalDate commissionStart;
+
+    @NotNull(message = "WYNIERZ DATĘ ZAKOŃCZENIA ZLECENIA")
+    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @Future(message = "DATA ZAKOŃCZENIA MUSI BYĆ W PRZYSZŁOŚCI")
     private LocalDate commissionEnd;
 
-    @OneToOne
+    @OneToOne(mappedBy = "commission")
     private Estimate estimate;
 
-    @OneToOne
-    private Schedule schedule;
 
-//    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
-//    @JoinTable(name = "commissions_employees",joinColumns = @JoinColumn(name = "commission_id"),
-//            inverseJoinColumns = @JoinColumn(name = "employee_id"))
-//    private List<Employee> employees;
+    @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
+    @JoinTable(name = "commissions_employees",joinColumns = @JoinColumn(name = "commission_id"),
+            inverseJoinColumns = @JoinColumn(name = "employee_id"))
+    private Set<Employee> employees;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.MERGE)
     private Company company;
 
 //----------------------------------------------------------------------------------------------------------
@@ -38,6 +53,7 @@ public class Commission {
 
 //-----------------------------------------------------------------------------------------------------------
 
+
     public long getId() {
         return id;
     }
@@ -46,12 +62,20 @@ public class Commission {
         this.id = id;
     }
 
-    public String getPrincipal() {
-        return principal;
+    public String getName() {
+        return name;
     }
 
-    public void setPrincipal(String principal) {
-        this.principal = principal;
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public Employee getLeader() {
+        return leader;
+    }
+
+    public void setLeader(Employee leader) {
+        this.leader = leader;
     }
 
     public LocalDate getCommissionStart() {
@@ -78,28 +102,12 @@ public class Commission {
         this.estimate = estimate;
     }
 
-    public Schedule getSchedule() {
-        return schedule;
+    public Set<Employee> getEmployees() {
+        return employees;
     }
 
-    public void setSchedule(Schedule schedule) {
-        this.schedule = schedule;
-    }
-
-//    public List<Employee> getEmployees() {
-//        return employees;
-//    }
-//
-//    public void setEmployees(List<Employee> employees) {
-//        this.employees = employees;
-//    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
+    public void setEmployees(Set<Employee> employees) {
+        this.employees = employees;
     }
 
     public Company getCompany() {
@@ -109,5 +117,6 @@ public class Commission {
     public void setCompany(Company company) {
         this.company = company;
     }
+
 
 }

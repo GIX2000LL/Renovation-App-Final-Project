@@ -17,7 +17,7 @@
             <td><a href="/employees"><button style="color: blue" >PRACOWNICY</button>
             </a> </td>
             <td style="width: 50px;"></td>
-            <td><a href="/company/commissions"><button style="color: blue" >ZLECENIA</button>
+            <td><a href="/commissions"><button style="color: blue" >ZLECENIA</button>
             </a> </td>
             <td style="color: green; text-align: right"><h4>ZALOGOWANY UŻYTKOWNIK: <sec:authentication property="principal.User.firstName" /></h4>
                 <h4><a href="/user"><button style="color: darkred" value="WRÓĆ">WRÓĆ</button></a> </h4>

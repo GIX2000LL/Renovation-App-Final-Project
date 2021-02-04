@@ -22,7 +22,7 @@
 
             <tr><td><form:input path="id" type="hidden"/></td></tr>
             <tr><td><form:input path="owner.id" type="hidden"/></td></tr>
-            <tr><td><form:input path="address.id" type="hidden"/></td></tr>
+<%--            <tr><td><form:input path="address.id" type="hidden"/></td></tr>--%>
 
             <tr><td>NAZWA</td> <td>  <form:input path="name"/> </td></tr><br/>
             <tr><td></td><td><form:errors path="name" cssStyle="color: red"/></td> </tr><br/>
