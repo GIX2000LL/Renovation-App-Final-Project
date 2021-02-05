@@ -19,7 +19,7 @@
 
 
     <table align="center">
-        <form:form method="post" modelAttribute="address" action="/employees/addressEdition/${employeeId}">
+        <form:form method="post" modelAttribute="address">
 
             <tr><td><form:input path="id" type="hidden"/></td></tr>
 

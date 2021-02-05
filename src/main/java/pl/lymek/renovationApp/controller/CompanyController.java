@@ -8,11 +8,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import pl.lymek.renovationApp.components.CurrentUser;
 import pl.lymek.renovationApp.model.Address;
+import pl.lymek.renovationApp.model.Commission;
 import pl.lymek.renovationApp.model.Company;
 import pl.lymek.renovationApp.model.User;
 import pl.lymek.renovationApp.repository.AddressRepository;
 import pl.lymek.renovationApp.repository.CompanyRepository;
 import javax.validation.Valid;
+import java.util.Collections;
+import java.util.List;
 
 @RequestMapping("/company")
 @Controller
@@ -33,7 +36,13 @@ public class CompanyController {
     //------------------------------------------------------------------------------------------------------
 
     @GetMapping
-    public String showCompanyPage() {
+    public String showCompanyPage(Model model) {
+
+        List<Commission> commissions =currentUser1.getCurrentUser().getCompany().getCommissions();
+        if(!commissions.isEmpty()) {
+            Collections.sort(commissions);
+            model.addAttribute("primeComplete",commissions.get(0));
+        }
 
         return "company";
     }

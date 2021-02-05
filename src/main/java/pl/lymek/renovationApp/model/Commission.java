@@ -12,7 +12,9 @@ import java.util.Set;
 
 @Entity
 @Table(name = "commissions")
-public class Commission {
+public class Commission implements Comparable<Commission> {
+
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,7 +38,6 @@ public class Commission {
 
     @OneToOne(mappedBy = "commission")
     private Estimate estimate;
-
 
     @ManyToMany(cascade = {CascadeType.PERSIST,CascadeType.MERGE})
     @JoinTable(name = "commissions_employees",joinColumns = @JoinColumn(name = "commission_id"),
@@ -118,5 +119,8 @@ public class Commission {
         this.company = company;
     }
 
-
+    @Override
+    public int compareTo(Commission o) {
+        return getCommissionEnd().compareTo(o.getCommissionEnd());
+    }
 }

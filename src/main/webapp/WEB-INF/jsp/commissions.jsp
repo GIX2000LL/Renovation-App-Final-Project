@@ -32,8 +32,8 @@
     <table align="center" >
         <c:forEach items="${commissions}" var="com">
             <tr>
-                <td style="color: black;background-color: white;">NAZWA ZLECENIA: ${com.name}</td>
-                <td></td><td>DATA ZAKOŃCZENIA: ${com.commissionEnd}</td>
+                <td>NAZWA ZLECENIA: ${com.name}</td>
+                <td></td><td style="color: red">DATA ZAKOŃCZENIA: ${com.commissionEnd}</td>
                 <td  style="width: 30px"></td>
                 <td><a href="/commissions/details/${com.id}"><button style="color: blue">SZCZEGÓŁY</button></a> </td>
 <%--                <td><a href="/commissions/edit/${com.id}"><button style="color: green">EDYTUJ</button></a> </td>--%>

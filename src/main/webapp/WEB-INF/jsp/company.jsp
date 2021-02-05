@@ -32,6 +32,22 @@
     <h1 style="color: darkblue"><sec:authentication property="principal.User.company.name"/></h1>
     <h2 style="color: blue">ZARZĄDZAJ MĄDRZE I SKUTECZNIE Z RENOVATION APP</h2>
     </p>
+    <br/><br/>
+
+    <div>
+        <c:if test="${primeComplete!=null}">
+            <table width="500 px">
+                <tr><td></td></tr>
+                <tr><td style="color: red"><h3>TO ZLECENIE KOŃCZY SIE JAKO PIERWSZE !!!</h3> </td></tr>
+                <tr><td>NAZWA: </td><td>${primeComplete.name}</td></tr>
+                <tr><td>DATA ZAKOŃCZENIA: </td><td>${primeComplete.commissionEnd}</td></tr>
+                <tr><td> KIEROWNIK ZLECENIA: </td><td>${primeComplete.leader.firstName} ${primeComplete.leader.lastName}</td></tr>
+                <tr><td></td></tr>
+                <tr><td></td><td><a href="/commissions/details/${primeComplete.id}"><button style="color: blue">
+                    PRZEJDŹ DO TEGO ZLECENIA</button></a></td></tr>
+            </table>
+        </c:if>
+    </div>
 
 </div>
 </sec:authorize>

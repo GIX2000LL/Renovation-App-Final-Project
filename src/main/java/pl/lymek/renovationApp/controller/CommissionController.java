@@ -1,19 +1,18 @@
 package pl.lymek.renovationApp.controller;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import pl.lymek.renovationApp.components.CurrentCommission;
 import pl.lymek.renovationApp.components.CurrentUser;
 import pl.lymek.renovationApp.model.Commission;
 import pl.lymek.renovationApp.model.Company;
 import pl.lymek.renovationApp.model.Employee;
 import pl.lymek.renovationApp.model.Estimate;
 import pl.lymek.renovationApp.repository.CommissionRepository;
-import pl.lymek.renovationApp.repository.CompanyRepository;
-import pl.lymek.renovationApp.repository.EmployeeRepository;
+import pl.lymek.renovationApp.repository.EstimateRepository;
 import pl.lymek.renovationApp.security.PrincipalDetails;
 
 import javax.validation.Valid;
@@ -24,17 +23,19 @@ import java.util.*;
 public class CommissionController {
 
 
-    private final EmployeeRepository employeeRepository;
     private final CurrentUser currentUser;
     private final CommissionRepository commissionRepository;
-    private final CompanyRepository companyRepository;
+    private final CurrentCommission currentCommission;
+    private final EstimateRepository estimateRepository;
 
-    public CommissionController(EmployeeRepository employeeRepository, CurrentUser currentUser, CommissionRepository commissionRepository, CompanyRepository companyRepository) {
-        this.employeeRepository = employeeRepository;
+    public CommissionController(CurrentUser currentUser, CommissionRepository commissionRepository, CurrentCommission currentCommission, EstimateRepository estimateRepository) {
         this.currentUser = currentUser;
         this.commissionRepository = commissionRepository;
-        this.companyRepository = companyRepository;
+        this.currentCommission = currentCommission;
+        this.estimateRepository = estimateRepository;
     }
+
+    //--------------------------------------------------------------------------------------------------------------------------
 
     @GetMapping
     public String showAllCommission (@AuthenticationPrincipal PrincipalDetails principal, Model model) {
@@ -44,7 +45,10 @@ public class CommissionController {
 
             return "noEmployeesToCommission";
         } else {
-            model.addAttribute("commissions", company.getCommissions());
+
+            List<Commission> commissions = company.getCommissions();
+            Collections.sort(commissions);
+            model.addAttribute("commissions", commissions);
 
         }
         return "commissions";
@@ -55,7 +59,6 @@ public class CommissionController {
     public String showCommissionForm (Model model) {
 
         model.addAttribute("commission",new Commission());
-        model.addAttribute("companyId",currentUser.getCurrentUser().getCompany().getId());
 
         return "commissionForm";
     }
@@ -72,9 +75,11 @@ public class CommissionController {
 
             Company company =principal.getUser().getCompany();
             commission.setCompany(company);
+
             Set<Employee> commissionEmployees = new HashSet<>();
             commissionEmployees.add(commission.getLeader());
             commission.setEmployees(commissionEmployees);
+
             commissionRepository.save(commission);
 
             return "redirect:/company";
@@ -84,7 +89,7 @@ public class CommissionController {
     @GetMapping("/details/{id}")
     public String showCommissionDetails(@PathVariable long id, Model model) {
 
-        model.addAttribute("commission",findCommissionById(id));
+        model.addAttribute("commission",currentCommission.findCommissionById(id));
 
         return "commissionDetails";
     }
@@ -92,15 +97,16 @@ public class CommissionController {
     @GetMapping("/addEmployees/{commissionId}")
     public String addEmployeesIntoCommission (@PathVariable long commissionId, @RequestParam long [] employee) {
 
-        Commission commission = findCommissionById (commissionId);
+        Commission commission = currentCommission.findCommissionById (commissionId);
         Set <Employee> commissionEmployees = commission.getEmployees();
-
         for (long e:employee) {
-            Employee employee1 = findEmployeeById(e);
+            Employee employee1 = currentCommission.findEmployeeById(e);
             commissionEmployees.add(employee1);
         }
-
         commission.setEmployees(commissionEmployees);
+
+        changeEstimateIfEmployeesNumberWillChange(commission,commissionEmployees);
+
         commissionRepository.save(commission);
 
         return "redirect:/commissions";
@@ -110,30 +116,17 @@ public class CommissionController {
     @GetMapping ("/deleteEmployeeFromCommission/{employeeId}/{commissionId}")
     public String removeEmployeeFromCommission (@PathVariable long commissionId,@PathVariable long employeeId) {
 
-        Commission commission = findCommissionById(commissionId);
+        Commission commission = currentCommission.findCommissionById(commissionId);
         Set<Employee> employees = commission.getEmployees();
-        employees.remove(findEmployeeById(employeeId));
+        employees.remove(currentCommission.findEmployeeById(employeeId));
         commission.setEmployees(employees);
+
+        changeEstimateIfEmployeesNumberWillChange(commission,employees);
+
         commissionRepository.save(commission);
 
         return "redirect:/commissions";
-
     }
-
-    @GetMapping("/addEstimate/{commissionId}")
-    public String showEstimateForm (@PathVariable long commissionId, Model model) {
-
-        Estimate estimate = new Estimate();
-        estimate.setCommission(findCommissionById(commissionId));
-
-        model.addAttribute("estimate",estimate);
-
-        return "estimate";
-    }
-
-
-
-
 
 //----------------------------------------------------------------------------------------------------------------
 
@@ -145,26 +138,21 @@ public class CommissionController {
         return currentUser.getCurrentUserCompanyById(id).getEmployees();
     }
 
-    public Commission findCommissionById (long id) {
 
-        Optional<Commission> commissionOptional = commissionRepository.findById(id);
+    public void changeEstimateIfEmployeesNumberWillChange (Commission commission, Set<Employee> employees) {
 
-        Commission commission = commissionOptional.stream()
-                .findAny()
-                .orElseThrow(()->new NoSuchElementException("NIE ZNALEZIONO ZLECENIA"));
+        if (commission.getEstimate() != null) {
 
-        return commission;
-    }
+            Estimate estimate = commission.getEstimate();
+            double workersCost = employees.stream()
+                    .mapToDouble(worker -> worker.getHourlyRate() * 8)
+                    .sum();
 
-    public Employee findEmployeeById (long id) {
+            estimate.setWorkersCost(workersCost);
+            commission.setEstimate(estimate);
+            estimateRepository.save(estimate);
+        }
 
-        Optional<Employee> optionalEmployee = employeeRepository.findById(id);
-
-        Employee employee = optionalEmployee.stream()
-                .findAny()
-                .orElseThrow(()->new NoSuchElementException("NIE ZNALEZIONO PRACOWNIKA"));
-
-        return employee;
     }
 
 }

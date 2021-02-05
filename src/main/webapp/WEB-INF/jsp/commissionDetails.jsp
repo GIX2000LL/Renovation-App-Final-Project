@@ -29,14 +29,23 @@
         <tr><td>DATA ROZPOCZĘCIA: </td><td>${commission.commissionStart}</td></tr>
         <tr><td>DATA ZAKOŃCZENIA: </td><td>${commission.commissionEnd}</td></tr>
         <tr><td>KIEROWNIK ZLECENIA: </td><td>${commission.leader.firstName} ${commission.leader.lastName}</td></tr>
-        <tr><td>PRZYDZIELENI PRACOWNICY: </td> <tr/>
+        <tr><td>PRZYDZIELENI PRACOWNICY: </td><td>${commission.leader.firstName} ${commission.leader.lastName} (kierownik)</td> <tr/>
             <c:forEach items="${commission.employees}" var ="comEmp">
+                <c:if test="${comEmp.id!=commission.leader.id}">
                 <tr><td></td> <td>${comEmp.firstName} ${comEmp.lastName}
                     <a href="/commissions/deleteEmployeeFromCommission/${comEmp.id}/${commission.id}">
                         <button style="color: red">USUŃ PRACOWNIKA </button></a> </td></tr>
+                </c:if>
             </c:forEach>
         <tr><td>WYCENA ZLECENIA:</td><td></td><tr/>
+            <c:if test="${not empty commission.estimate}">
+                <tr><td>CAŁKOWITA KWOTA ZLECENIA : </td><td> ${commission.estimate.totalPrice} zł</td></tr>
+                <tr><td>KOSZTA PRACOWNICZE : </td><td> ${commission.estimate.workersCost} zł</td></tr>
+                <tr><td>KOSZTA MATERIAŁÓW : </td><td> ${commission.estimate.materialsCost} zł </td></tr>
+                <tr><td>PRZEWIDYWANY ZYSK : </td><td style="color: darkred"> ${commission.estimate.profit = commission.estimate.totalPrice-
+                (commission.estimate.workersCost+commission.estimate.materialsCost)} zł </td></tr>
 
+            </c:if>
     </table>
     <br/><br/>
 </div>
@@ -51,16 +60,19 @@
             <select name="employee" multiple="multiple">
 
                 <c:forEach items="${currentCompanyEmployees}" var="emp">
+                    <c:if test="${emp.id!=commission.leader.id}">
                     <option style="width: 200px" value="${emp.id}"> <span style="align-content: center">
                             ${emp.firstName} ${emp.lastName}</span></option>
+                    </c:if>
                 </c:forEach>
             </select>
             <input style="color: blue" type="submit" value="ZATWIERDŹ WYBÓR">
         </form>
     <br/>
-            <a href="/commissions/addEstimate/${commission.id}"><button style="color: blue">
+            <c:if test="${empty commission.estimate}">
+            <a href="/estimates/add/${commission.id}"><button style="color: blue">
                 DODAJ WYCENĘ ZLECENIA</button> </a>
-
+            </c:if>
 
 
 
