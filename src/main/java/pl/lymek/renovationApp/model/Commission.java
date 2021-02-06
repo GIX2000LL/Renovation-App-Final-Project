@@ -123,4 +123,12 @@ public class Commission implements Comparable<Commission> {
     public int compareTo(Commission o) {
         return getCommissionEnd().compareTo(o.getCommissionEnd());
     }
+
+    @Override
+    public String toString() {
+        return "Commission{" +
+                "id=" + id +
+                ", estimate=" + estimate +
+                '}';
+    }
 }

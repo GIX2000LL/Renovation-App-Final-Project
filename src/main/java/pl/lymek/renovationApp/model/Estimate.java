@@ -76,4 +76,17 @@ public class Estimate {
     public void setProfit(double profit) {
         this.profit = profit;
     }
+
+    @Override
+    public String toString() {
+        return "Estimate{" +
+                "id=" + id +
+                ", materialsCost=" + materialsCost +
+                ", workersCost=" + workersCost +
+                ", totalPrice=" + totalPrice +
+                ", profit=" + profit +
+                '}';
+    }
 }
+
+

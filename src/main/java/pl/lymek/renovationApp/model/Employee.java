@@ -43,7 +43,14 @@ public class Employee {
     public Employee() {
     }
 
-//----------------------------------------------------------------------------------------------------
+    public Employee(@Size(min = 2, message = "IMIĘ MUSI SIĘ SKŁADAC Z MINIMUM 2 ZNAKÓW") String firstName,
+                    @Size(min = 2, message = "NAZWISKO MUSI SIĘ SKŁADAC Z MINIMUM 2 ZNAKÓW") String lastName, double hourlyRate) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.hourlyRate = hourlyRate;
+    }
+
+    //----------------------------------------------------------------------------------------------------
 
     public long getId() {
         return id;

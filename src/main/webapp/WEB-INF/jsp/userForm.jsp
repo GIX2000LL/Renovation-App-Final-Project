@@ -24,7 +24,6 @@
                 <tr><td><form:input path="securityRole" type="hidden"/></td></tr>
                 <tr><td><form:input path="company.id" type="hidden"/></td></tr>
                 <tr><td><form:input path="company.name" type="hidden"/></td></tr>
-                <tr><td><form:input path="address.id" type="hidden"/></td></tr>
 
                 <tr><td>IMIĘ</td> <td>  <form:input path="firstName"/> </td></tr><br/>
                 <tr><td></td><td><form:errors path="firstName" cssStyle="color: red"/></td> </tr><br/>
